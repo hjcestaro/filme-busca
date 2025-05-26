@@ -7,6 +7,7 @@ import NotAvailable from "../assets/No_Available.jpg";
 import { isFavorite, toggleFavorite } from "../utils/favoriteUtils";
 import type { Movie } from "../types/Movie";
 import Spinner from "../components/Spinner";
+import WatchProviders from "../components/WatchProviders";
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -41,7 +42,12 @@ export default function MovieDetails() {
     setIsFav(updated);
   };
 
-  if (loading) return <div className="flex justify-center items-center h-[100vh]"><Spinner /></div>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-[100vh]">
+        <Spinner />
+      </div>
+    );
   if (!movie) return <p>Filme não encontrado</p>;
 
   return (
@@ -78,24 +84,30 @@ export default function MovieDetails() {
               className="h-auto w-[300px] object-contain opacity-70 mb-4"
             />
           )}
-          <div className="md:px-6">
-            <div className="text-gray-200 mb-4">
+          <div className="flex justify-between flex-col md:px-6">
+            <div>
               <div className="text-gray-200 mb-4">
-                {movie.overview !== undefined && movie.overview.length > 0
-                  ? movie.overview
-                  : <div className="italic text-gray-500">{"Sinopse não disponível :("}</div>
-                }
+                <div className="text-gray-200 mb-4">
+                  {movie.overview !== undefined && movie.overview.length > 0 ? (
+                    movie.overview
+                  ) : (
+                    <div className="italic text-gray-500">
+                      {"Sinopse não disponível :("}
+                    </div>
+                  )}
+                </div>
               </div>
+              <span className="italic">
+                Lançamento:{" "}
+                {movie.release_date &&
+                !isNaN(new Date(movie.release_date).getTime())
+                  ? new Intl.DateTimeFormat("pt-BR").format(
+                      new Date(movie.release_date)
+                    )
+                  : "Data não disponível"}
+              </span>
             </div>
-            <span className="italic">
-              Lançamento:{" "}
-              {movie.release_date &&
-              !isNaN(new Date(movie.release_date).getTime())
-                ? new Intl.DateTimeFormat("pt-BR").format(
-                    new Date(movie.release_date)
-                  )
-                : "Data não disponível"}
-            </span>
+            <WatchProviders id={id} />
           </div>
         </div>
 
