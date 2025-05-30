@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Input from "./Input";
 import Button from "./Button";
@@ -11,27 +11,54 @@ export default function Search() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchMovies = async () => {
-    if (!query.trim()) return;
+  useEffect(() => {
+    const savedQuery = localStorage.getItem("lastQuery");
+    if (savedQuery) {
+      setQuery(savedQuery);
+      fetchMovies(savedQuery, 1);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (query.trim()) {
+      fetchMovies(query, page);
+    }
+  }, [page]);
+
+  const fetchMovies = async (search: string, currentPage: number) => {
+    setIsLoading(true);
+    setError(null);
     try {
       const response = await api.get("/search/movie", {
         params: {
-          query: query.trim(),
-          page,
+          query: search.trim(),
+          page: currentPage,
         },
       });
+      if (response.data.results.length === 0) {
+        setError("Nenhum filme encontrado. Tente outro termo.");
+      }
       setMovies(response.data.results);
       setTotalPages(response.data.total_pages);
     } catch (error) {
+      setError("Ocorreu um erro ao buscar filmes. Tente novamente.");
       console.error("Erro ao buscar filmes:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSearch = () => {
-    if (!query.trim()) return;
+    if (!query.trim()) {
+      setError("Por favor, digite um termo de busca.");
+      return;
+    }
+    localStorage.setItem("lastQuery", query);
     setPage(1);
-    fetchMovies();
+    fetchMovies(query, 1);
   };
 
   return (
@@ -43,8 +70,30 @@ export default function Search() {
           placeholder="Nome do filme"
           className="border border-white rounded px-1"
         />
-        <Button onClick={handleSearch}>Procurar</Button>
+        <Button onClick={handleSearch} disabled={isLoading}>
+          {isLoading ? "Buscando..." : "Procurar"}
+        </Button>
       </div>
+
+      {isLoading && (
+        <div className="text-center text-white py-8">Carregando...</div>
+      )}
+
+      {error && (
+        <div className="text-center text-red-500 py-8">{error}</div>
+      )}
+
+      {!isLoading && !error && movies.length === 0 && query.trim() && (
+        <div className="text-center text-white py-8">
+          Nenhum filme encontrado para "{query}".
+        </div>
+      )}
+
+      {!isLoading && !error && movies.length === 0 && !query.trim() && (
+        <div className="text-center text-white py-8">
+          Digite um termo de busca para encontrar filmes.
+        </div>
+      )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 px-6">
         {movies.map((item) => (
@@ -82,7 +131,7 @@ export default function Search() {
         <div className="flex justify-center items-center gap-4 my-8">
           <Button
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-            disabled={page === 1}
+            disabled={page === 1 || isLoading}
           >
             Anterior
           </Button>
@@ -91,7 +140,7 @@ export default function Search() {
           </span>
           <Button
             onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={page === totalPages}
+            disabled={page === totalPages || isLoading}
           >
             Próxima
           </Button>
