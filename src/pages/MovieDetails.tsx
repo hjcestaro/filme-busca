@@ -8,6 +8,8 @@ import { isFavorite, toggleFavorite } from "../utils/favoriteUtils";
 import type { Movie } from "../types/Movie";
 import Spinner from "../components/Spinner";
 import WatchProviders from "../components/WatchProviders";
+import Review from "../components/Review";
+import StarRating from "../components/StarRating";
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -26,6 +28,7 @@ export default function MovieDetails() {
           }&language=pt-BR`
         );
         setMovie(movieRes.data);
+        console.log(movieRes.data);
         setIsFav(isFavorite(id!));
       } catch (err) {
         console.error("Erro ao buscar detalhes:", err);
@@ -106,6 +109,11 @@ export default function MovieDetails() {
                     )
                   : "Data não disponível"}
               </span>
+              {movie && (
+                <div className="mt-4">
+                  <StarRating rating={movie.vote_average ?? 0} />
+                </div>
+              )}
             </div>
             <WatchProviders id={id} />
           </div>
@@ -113,6 +121,7 @@ export default function MovieDetails() {
 
         <Trailer id={id} />
         <CastList id={id} />
+        <Review id={id} />
       </div>
     </div>
   );

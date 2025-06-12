@@ -13,6 +13,7 @@ export default function Search() {
   const [totalPages, setTotalPages] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
     const savedQuery = localStorage.getItem("lastQuery");
@@ -23,7 +24,7 @@ export default function Search() {
   }, []);
 
   useEffect(() => {
-    if (query.trim()) {
+    if (hasSearched && query.trim()) {
       fetchMovies(query, page);
     }
   }, [page]);
@@ -58,6 +59,7 @@ export default function Search() {
     }
     localStorage.setItem("lastQuery", query);
     setPage(1);
+    setHasSearched(true);
     fetchMovies(query, 1);
   };
 
@@ -79,24 +81,16 @@ export default function Search() {
         <div className="text-center text-white py-8">Carregando...</div>
       )}
 
-      {error && (
-        <div className="text-center text-red-500 py-8">{error}</div>
-      )}
+      {error && <div className="text-center text-red-500 py-8">{error}</div>}
 
-      {!isLoading && !error && movies.length === 0 && query.trim() && (
+      {!isLoading && !error && hasSearched && movies.length === 0 && (
         <div className="text-center text-white py-8">
           Nenhum filme encontrado para "{query}".
         </div>
       )}
 
-      {!isLoading && !error && movies.length === 0 && !query.trim() && (
-        <div className="text-center text-white py-8">
-          Digite um termo de busca para encontrar filmes.
-        </div>
-      )}
-
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 px-6">
-        {movies.map((item) => (
+        {movies.slice(0, 18).map((item) => (
           <Link
             to={`/filme/${item.id}`}
             key={item.id}
