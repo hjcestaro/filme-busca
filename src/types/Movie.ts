@@ -6,4 +6,11 @@ export interface Movie {
   overview?: string;
   release_date?: string;
   vote_average?: number;
+  homepage?: string;
+  runtime?: number;
+
+  genres?: {
+    id: number;
+    name: string;
+  }[];
 }

@@ -10,3 +10,26 @@ export const api = axios.create({
     language: "pt-BR",
   },
 });
+
+export const fetchNowPlayingMovies = async (page = 1) => {
+  try {
+    const response = await api.get("/movie/now_playing", {
+      params: { page },
+    });
+    return response.data.results;
+  } catch (error) {
+    console.error("Error fetching now playing movies:", error);
+    throw error;
+  }
+};
+
+export const fetchPopularMovies = async (page: number) => {
+  const response = await api.get("/movie/popular", {
+    params: { page },
+  });
+  return {
+    results: response.data.results,
+    totalPages: response.data.total_pages,
+    totalResults: response.data.total_results,
+  };
+};
