@@ -98,41 +98,33 @@ export default function PopularMoviesCarousel() {
           <SwiperSlide key={movie.id}>
             <div className="group relative rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
               <div className="relative aspect-[2/3] overflow-hidden">
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={movie.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  loading="lazy"
-                />
+                <Link to={`/filme/${movie.id}`}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    alt={movie.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    loading="lazy"
+                  />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    {movie.vote_average > 0 && (
-                      <div className="flex items-center gap-1 mb-2">
-                        <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                        <span className="text-white text-sm font-semibold">
-                          {movie.vote_average.toFixed(1)}
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="flex gap-2">
-                      <Link
-                        to={`/filme/${movie.id}`}
-                        className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded text-xs font-semibold transition-colors flex items-center justify-center gap-1"
-                      >
-                        <Play className="w-3 h-3" />
-                        Detalhes
-                      </Link>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      {movie.vote_average > 0 && (
+                        <div className="flex items-center gap-1 mb-2">
+                          <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                          <span className="text-white text-sm font-semibold">
+                            {movie.vote_average.toFixed(1)}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
 
-                {movie.release_date && (
-                  <div className="absolute top-3 left-3 bg-black/80 text-white px-2 py-1 rounded-full text-xs font-semibold">
-                    {new Date(movie.release_date).getFullYear()}
-                  </div>
-                )}
+                  {movie.release_date && (
+                    <div className="absolute top-3 left-3 bg-black/80 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                      {new Date(movie.release_date).getFullYear()}
+                    </div>
+                  )}
+                </Link>
               </div>
 
               <div className="p-4">
@@ -153,15 +145,6 @@ export default function PopularMoviesCarousel() {
           </SwiperSlide>
         ))}
       </Swiper>
-
-      <div className="flex justify-center gap-1 mt-6">
-        {movies.slice(0, 6).map((_, index) => (
-          <div
-            key={index}
-            className="w-2 h-2 bg-gray-600 rounded-full animate-pulse"
-          />
-        ))}
-      </div>
 
       <div className="text-center mt-12">
         <Link

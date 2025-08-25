@@ -131,43 +131,31 @@ export default function EmBreveCarousel() {
           <SwiperSlide key={movie.id}>
             <div className="group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
               <div className="relative aspect-[2/3] overflow-hidden">
-                {movie.poster_path ? (
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    alt={movie.title}
-                    className="h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-80"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="h-full w-full flex items-center justify-center bg-gray-800">
+                <Link to={`/filme/${movie.id}`}>
+                  {movie.poster_path ? (
                     <img
-                      src={NotAvailable}
-                      alt="Imagem indisponível"
-                      className="h-1/2 w-1/2 object-contain opacity-50"
+                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      alt={movie.title}
+                      className="h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-80"
+                      loading="lazy"
                     />
-                  </div>
-                )}
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <div className="flex gap-2">
-                      <Link
-                        to={`/filme/${movie.id}`}
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded text-xs font-semibold transition-colors flex items-center justify-center gap-1"
-                      >
-                        <Play className="w-3 h-3" />
-                        Detalhes
-                      </Link>
+                  ) : (
+                    <div className="h-full w-full flex items-center justify-center bg-gray-800">
+                      <img
+                        src={NotAvailable}
+                        alt="Imagem indisponível"
+                        className="h-1/2 w-1/2 object-contain opacity-50"
+                      />
                     </div>
-                  </div>
-                </div>
+                  )}
 
-                {movie.release_date && (
-                  <div className="absolute top-3 left-3 bg-blue-600/90 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-                    <Calendar className="w-3 h-3" />
-                    {formatReleaseDate(movie.release_date)}
-                  </div>
-                )}
+                  {movie.release_date && (
+                    <div className="absolute top-3 left-3 bg-blue-600/90 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      {formatReleaseDate(movie.release_date)}
+                    </div>
+                  )}
+                </Link>
               </div>
 
               <div className="p-4">
