@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchPopularMovies } from "../utils/api";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
-import { ChevronLeft, ChevronRight, Star, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface Movie {
