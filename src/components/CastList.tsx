@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../utils/api";
 import { User } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface Props {
   id: string | undefined;
@@ -8,9 +9,11 @@ interface Props {
 }
 
 interface Actor {
+  id: number;
   cast_id: number;
   name: string;
   character: string;
+  profile_path: string | null;
 }
 
 interface CreditsResponse {
@@ -25,11 +28,13 @@ export default function CastList({ id, maxItems = 8 }: Props) {
   useEffect(() => {
     const fetchCast = async () => {
       if (!id) return;
-      
+
       try {
         setIsLoading(true);
         setError(null);
-        const creditsRes = await api.get<CreditsResponse>(`/movie/${id}/credits`);
+        const creditsRes = await api.get<CreditsResponse>(
+          `/movie/${id}/credits`
+        );
         setCredits(creditsRes.data);
       } catch (err) {
         console.error("Erro ao buscar elenco:", err);
@@ -62,11 +67,7 @@ export default function CastList({ id, maxItems = 8 }: Props) {
   }
 
   if (error) {
-    return (
-      <div className="text-center py-4 text-gray-400">
-        {error}
-      </div>
-    );
+    return <div className="text-center py-4 text-gray-400">{error}</div>;
   }
 
   if (!credits) return null;
@@ -77,26 +78,46 @@ export default function CastList({ id, maxItems = 8 }: Props) {
         <User className="w-5 h-5 text-red-500" />
         Elenco Principal
       </h2>
-      
+
       {credits.cast.length > 0 ? (
-        <ul className="grid grid-cols-3 gap-5">
+        <ul className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {credits.cast.slice(0, maxItems).map((actor) => (
-            <li key={actor.cast_id} className="flex items-start gap-3 group">
-              <div className="flex-1 min-w-0">
-                <p className="font-medium truncate">
-                  {actor.name}
-                </p>
-                <p className="text-sm text-gray-400 truncate">
-                  {actor.character || "Personagem não especificado"}
-                </p>
-              </div>
+            <li
+              key={actor.cast_id}
+              className="flex items-center gap-3 group cursor-pointer hover:bg-gray-800/30 p-2 rounded-lg transition"
+            >
+              <Link
+                to={`/actor/${actor.id}`}
+                className="flex items-center gap-4"
+              >
+                {actor.profile_path ? (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                    alt={actor.name}
+                    className="w-16 h-16 rounded-full object-cover flex-shrink-0"
+                  />
+                ) : (
+                  <img
+                    src="/src/assets/avatar.png"
+                    alt="Avatar"
+                    className="w-16 h-16 rounded-full object-cover flex-shrink-0"
+                  />
+                )}
+
+                <div className="min-w-0">
+                  <p className="font-medium truncate">{actor.name}</p>
+                  <p className="text-sm text-gray-400 truncate">
+                    {actor.character || "Personagem não especificado"}
+                  </p>
+                </div>
+              </Link>
             </li>
           ))}
         </ul>
       ) : (
         <p className="text-gray-500 italic">Elenco não disponível</p>
       )}
-      
+
       {credits.cast.length > maxItems && (
         <p className="text-sm text-gray-400">
           + {credits.cast.length - maxItems} atores no elenco

@@ -1,6 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Film, Heart, Home, Popcorn, Calendar, Rocket, Menu, X } from "lucide-react";
+import {
+  Film,
+  Heart,
+  Home,
+  Popcorn,
+  Calendar,
+  Rocket,
+  Menu,
+  X,
+  Search,
+} from "lucide-react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,7 +34,8 @@ export default function Header() {
     { path: "/", label: "Início", icon: Home },
     { path: "/popular", label: "Populares", icon: Popcorn },
     { path: "/em-cartaz", label: "Em Cartaz", icon: Calendar },
-     { path: "/em-breve", label: "Próximos", icon: Rocket },
+    { path: "/em-breve", label: "Próximos", icon: Rocket },
+    { path: "/busca", label: "Busca filmes", icon: Search },
     { path: "/favoritos", label: "Favoritos", icon: Heart },
   ];
 
@@ -110,7 +121,6 @@ export default function Header() {
         )}
       </header>
 
-      {/* Espaço para o header fixo */}
       <div className="h-16"></div>
     </>
   );

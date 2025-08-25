@@ -1,12 +1,19 @@
+
 import "./App.css";
 import Banner from "./components/Banner";
-import SearchTask from "./components/Search";
+import EmBreveCarousel from "./components/EmBreveCarousel";
+import JumbotronSearch from "./components/JumbotronSearch";
+import PopularMoviesCarousel from "./components/PopularMoviesCarousel";
 
 function App() {
+
+  
   return (
     <>
       <Banner />
-      <SearchTask />
+      <PopularMoviesCarousel />
+      <EmBreveCarousel />
+      <JumbotronSearch />
     </>
   );
 }

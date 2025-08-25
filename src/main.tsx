@@ -11,6 +11,8 @@ import FavoritesSection from "./pages/Favoritos/index.tsx";
 import NowPlayingMovies from "./pages/EmCartaz/index.tsx";
 import Header from "./components/Header.tsx";
 import UpcomingMovies from "./pages/EmBreve/index.tsx";
+import ActorPage from "./pages/ActorPage/index.tsx";
+import SearchTask from "./pages/Search/index.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -24,6 +26,8 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/favoritos" element={<FavoritesSection />} />
         <Route path="/em-breve" element={<UpcomingMovies />} />
         <Route path="/em-cartaz" element={<NowPlayingMovies />} />
+        <Route path="/actor/:id" element={<ActorPage />} />
+        <Route path="/busca" element={<SearchTask />} />
       </Routes>
       <Footer />
     </BrowserRouter>

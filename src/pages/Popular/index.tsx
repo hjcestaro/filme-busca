@@ -16,7 +16,7 @@ export default function PopularMovies() {
         setIsLoading(true);
         setError(null);
         const data = await fetchPopularMovies(1);
-        setMovies(data.results.slice(0, 10));
+        setMovies(data.results.slice(0, 25));
       } catch (err) {
         console.error("Failed to load popular movies:", err);
         setError("Não foi possível carregar os filmes populares");
@@ -29,7 +29,7 @@ export default function PopularMovies() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen">
       <PageHeader
         title="Filmes Populares"
         description="Os filmes mais populares no momento"

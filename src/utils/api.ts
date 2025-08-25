@@ -33,3 +33,31 @@ export const fetchPopularMovies = async (page: number) => {
     totalResults: response.data.total_results,
   };
 };
+
+export const fetchUpcomingMovies = async (limit = 15) => {
+  try {
+    const response = await api.get("/movie/upcoming", {
+      params: {
+        language: "pt-BR",
+        region: "BR",
+      },
+    });
+
+    const today = new Date();
+    const sixMonthsFromNow = new Date();
+    sixMonthsFromNow.setMonth(today.getMonth() + 6);
+
+    const upcomingMovies = response.data.results
+      .filter((movie: any) => {
+        if (!movie.release_date) return false;
+        const releaseDate = new Date(movie.release_date);
+        return releaseDate > today && releaseDate <= sixMonthsFromNow;
+      })
+      .slice(0, limit);
+
+    return upcomingMovies;
+  } catch (error) {
+    console.error("Error fetching upcoming movies:", error);
+    throw error;
+  }
+};

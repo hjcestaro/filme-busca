@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import NotAvailable from "../assets/No_Available.jpg";
-import type { Movie } from "../types/Movie";
-import { api } from "../utils/api";
+import NotAvailable from "../../assets/No_Available.jpg";
+import type { Movie } from "../../types/Movie";
+import { api } from "../../utils/api";
 import { Search, Star } from "lucide-react";
-import Pagination from "./Pagination";
+import Pagination from "../../components/Pagination";
 
 export default function SearchTask() {
   const [query, setQuery] = useState("");
@@ -147,7 +147,7 @@ export default function SearchTask() {
               Resultados para: <span className="text-red-400">"{query}"</span>
             </h2>
             <div className="text-gray-400 text-sm">
-              {movies.length} de {totalPages * 20} resultados
+              {movies.length} resultados
             </div>
           </div>
 

@@ -23,7 +23,6 @@ export default function Pagination({
 
   return (
     <div className="flex justify-center items-center gap-4 mt-12">
-      {/* Botão anterior */}
       <button
         onClick={() => handleChange(page - 1)}
         disabled={page === 1 || isLoading}
@@ -37,7 +36,6 @@ export default function Pagination({
         <span>Anterior</span>
       </button>
 
-      {/* Números */}
       <div className="flex items-center gap-2">
         {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
           let pageNum;
@@ -81,7 +79,6 @@ export default function Pagination({
         )}
       </div>
 
-      {/* Botão próxima */}
       <button
         onClick={() => handleChange(page + 1)}
         disabled={page === totalPages || isLoading}

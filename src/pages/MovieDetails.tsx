@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CastList from "../components/CastList";
@@ -13,6 +13,7 @@ import { Heart, ArrowLeft, Clock, Calendar, Film, Star } from "lucide-react";
 
 export default function MovieDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(true);
   const [isFav, setIsFav] = useState(false);
@@ -92,13 +93,13 @@ export default function MovieDetails() {
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 h-full flex flex-col justify-end pb-12">
           <div className="max-w-4xl pt-4">
-            <Link
-              to="/"
+            <button
+              onClick={() => navigate(-1)}
               className="flex items-center gap-2 text-white/80 hover:text-white transition-colors mb-6"
             >
               <ArrowLeft className="w-5 h-5" />
               Voltar
-            </Link>
+            </button>
 
             <div className="flex flex-col md:flex-row gap-6 items-start">
               <div className="flex-shrink-0 relative group">
